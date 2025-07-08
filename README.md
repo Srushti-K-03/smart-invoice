@@ -9,20 +9,13 @@ A full stack invoice generator + tracker built with React, Node.js, Express, and
 - Auto-calculate totals
 - Save invoices to dashboard
 - Print / Download invoices
-- Built-in QR code (upcoming)
-- Dark mode support (upcoming)
-- Secure login system (upcoming)
 
 ## ⚙️ Tech Stack
 
 - **Frontend:** React, Tailwind CSS
 - **Backend:** Node.js, Express
 - **Database:** MongoDB
-- **Other:** react-router, react-to-print, QR code lib
-
-## 📸 Screenshots
-
-_(Coming soon — add once UI is polished)_
+- **Other:** react-router, react-to-print
 
 ## 🚀 Setup Instructions
 
