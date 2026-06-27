@@ -23,7 +23,7 @@ A modern **full-stack invoice management system** built using **React, Node.js, 
 
 ## 📸 Project Screenshots
 
-> Add your screenshots below.
+
 
 ### Create Invoice
 
