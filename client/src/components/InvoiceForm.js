@@ -1,55 +1,169 @@
 import React from 'react';
+// import { QRCodeSVG } from 'qrcode.react';
+
 
 const InvoiceForm = ({
-  invoiceNumber, setInvoiceNumber,
-  date, setDate,
-  dueDate, setDueDate,
-  sender, setSender,
-  recipient, setRecipient,
-  itemInput, setItemInput,
-  handleAddItem, items, grandTotal
+  invoiceNumber,
+  setInvoiceNumber,
+  date,
+  setDate,
+  dueDate,
+  setDueDate,
+  sender,
+  setSender,
+  recipient,
+  setRecipient,
+  itemInput,
+  setItemInput,
+  handleAddItem,
+  items,
+  grandTotal,
+  invoiceId,
+  qrUrl,
 }) => {
   return (
     <div>
+      {/* Invoice Metadata */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div>
+          <label className="block text-sm font-medium mb-1">Invoice #</label>
+          <input
+            type="text"
+            value={invoiceNumber}
+            onChange={(e) => setInvoiceNumber(e.target.value)}
+            className="w-full px-3 py-2 border rounded dark:bg-gray-700"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Date</label>
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="w-full px-3 py-2 border rounded dark:bg-gray-700"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Due Date</label>
+          <input
+            type="date"
+            value={dueDate}
+            onChange={(e) => setDueDate(e.target.value)}
+            className="w-full px-3 py-2 border rounded dark:bg-gray-700"
+          />
+        </div>
+      </div>
+
+      {/* Sender & Recipient */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <input type="text" value={invoiceNumber} onChange={(e) => setInvoiceNumber(e.target.value)} placeholder="Invoice #" className="input-style" />
-        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="input-style" />
-        <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} className="input-style" />
-        <input type="text" value={sender} onChange={(e) => setSender(e.target.value)} placeholder="Sender" className="input-style" />
-        <input type="text" value={recipient} onChange={(e) => setRecipient(e.target.value)} placeholder="Recipient" className="input-style" />
+        <div>
+          <label className="block text-sm font-medium mb-1">From</label>
+          <input
+            type="text"
+            value={sender}
+            onChange={(e) => setSender(e.target.value)}
+            className="w-full px-3 py-2 border rounded dark:bg-gray-700"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">To</label>
+          <input
+            type="text"
+            value={recipient}
+            onChange={(e) => setRecipient(e.target.value)}
+            className="w-full px-3 py-2 border rounded dark:bg-gray-700"
+          />
+        </div>
       </div>
 
-      <div className="flex gap-2 mb-4">
-        <input type="text" value={itemInput.name} onChange={(e) => setItemInput({ ...itemInput, name: e.target.value })} placeholder="Item" className="input-style" />
-        <input type="number" value={itemInput.quantity} onChange={(e) => setItemInput({ ...itemInput, quantity: e.target.value })} placeholder="Qty" className="input-style" />
-        <input type="number" value={itemInput.price} onChange={(e) => setItemInput({ ...itemInput, price: e.target.value })} placeholder="Price" className="input-style" />
-        <button onClick={handleAddItem} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Add</button>
+      {/* Items List */}
+      <div className="mb-6">
+        <h3 className="text-lg font-medium mb-2">Items</h3>
+
+        {items.map((item, index) => (
+          <div
+            key={index}
+            className="grid grid-cols-4 gap-4 mb-2 text-sm bg-gray-50 dark:bg-gray-700 p-2 rounded"
+          >
+            <div>{item.name}</div>
+            <div>{item.quantity}</div>
+            <div>₹{item.price}</div>
+            <div className="font-semibold">₹{item.total}</div>
+          </div>
+        ))}
+
+        {/* Item Input */}
+        <div className="grid grid-cols-4 gap-4 mt-4">
+          <input
+            type="text"
+            placeholder="Item name"
+            value={itemInput.name}
+            onChange={(e) =>
+              setItemInput({ ...itemInput, name: e.target.value })
+            }
+            className="px-3 py-2 border rounded dark:bg-gray-700"
+          />
+          <input
+            type="number"
+            placeholder="Qty"
+            value={itemInput.quantity}
+            onChange={(e) =>
+              setItemInput({ ...itemInput, quantity: e.target.value })
+            }
+            className="px-3 py-2 border rounded dark:bg-gray-700"
+          />
+          <input
+            type="number"
+            placeholder="Price"
+            value={itemInput.price}
+            onChange={(e) =>
+              setItemInput({ ...itemInput, price: e.target.value })
+            }
+            className="px-3 py-2 border rounded dark:bg-gray-700"
+          />
+          <button
+            onClick={handleAddItem}
+            className="bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 transition"
+          >
+            + Add Item
+          </button>
+        </div>
       </div>
 
-      {items.length > 0 && (
-        <table className="w-full table-auto mb-6 border">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-4 py-2 text-left">Item</th>
-              <th className="px-4 py-2 text-left">Qty</th>
-              <th className="px-4 py-2 text-left">Price</th>
-              <th className="px-4 py-2 text-left">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item, i) => (
-              <tr key={i} className="border-t">
-                <td className="px-4 py-2">{item.name}</td>
-                <td className="px-4 py-2">{item.quantity}</td>
-                <td className="px-4 py-2">₹{item.price}</td>
-                <td className="px-4 py-2">₹{item.total}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      {/* Grand Total */}
+      <div className="mt-6 text-right">
+        <p className="text-lg font-bold">
+          Grand Total: ₹{grandTotal.toLocaleString()}
+        </p>
+      </div>
 
-      <h2 className="text-2xl font-semibold mb-4">Grand Total: ₹{grandTotal}</h2>
+      {/* ✅ QR Code Section
+    {qrUrl && (
+  <div className="mt-10 flex justify-center">
+    <div className="bg-white p-6 rounded-xl shadow-lg text-center max-w-sm w-full">
+      <p className="text-sm text-gray-800 font-semibold mb-2">
+        Scan to view invoice online
+      </p>
+
+      <QRCodeSVG
+        value={qrUrl}
+        size={160}
+        bgColor="#ffffff"
+        fgColor="#000000"
+        includeMargin={true}
+      />
+
+      <p className="text-xs text-gray-700 mt-4 break-words">{qrUrl}</p>
+    </div>
+  </div>
+)} */}
+
+
+
+
     </div>
   );
 };

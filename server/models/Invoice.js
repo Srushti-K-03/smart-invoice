@@ -1,4 +1,3 @@
-// server/models/Invoice.js
 const mongoose = require('mongoose');
 
 const ItemSchema = new mongoose.Schema({

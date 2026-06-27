@@ -23,3 +23,8 @@ code {
   border-radius: 6px;
   width: 100%;
 }
+@layer components {
+  .input {
+    @apply px-3 py-2 border border-gray-300 rounded bg-white dark:bg-gray-700 dark:text-white placeholder-gray-500 w-full;
+  }
+}
